@@ -9,6 +9,30 @@ page was captured in that archive, so the home page copy is **verbatim from the
 real site** and every subpage is newly written placeholder content that follows
 the original navigation structure.
 
+## Live site
+
+| | |
+| --- | --- |
+| Production | <https://broncobots.netlify.app> |
+| Netlify admin | <https://app.netlify.com/projects/broncobots> |
+| GitHub repo | <https://github.com/ElMagoCT/broncobots> (public) |
+
+Publish an update:
+
+```bash
+export PATH="$HOME/.local/node-v24.19.0-darwin-arm64/bin:$PATH"
+cd ~/Documents/Workspace/broncobots-site
+python3 tools/build.py          # only if you edited anything under tools/
+netlify deploy --prod --dir .
+```
+
+Upload *is* the deploy — there is no build step. Drop `--prod` for a temporary
+draft URL to review before going live.
+
+Auto-deploy from `git push` is not wired up yet; see `DEPLOY-PROMPT.md` for the
+last step (it needs a browser or a real terminal, because `netlify init` cannot
+be automated).
+
 ## Run it locally
 
 ```bash

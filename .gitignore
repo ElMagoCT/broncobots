@@ -1,0 +1,14 @@
+# Netlify CLI local state (contains this machine's site link)
+.netlify/
+
+# macOS
+.DS_Store
+._*
+
+# Editor / OS cruft
+*.swp
+.idea/
+.vscode/
+
+# Local archives / scratch
+*.zip

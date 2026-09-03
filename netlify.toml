@@ -1,0 +1,42 @@
+# Netlify configuration for the Brophy Broncobots static site.
+#
+# There is no build step: the repo root IS the published site. The generated
+# .html files at the root are committed, so Netlify just uploads them.
+# Committing this file means a git-connected deploy picks up the right settings
+# automatically instead of relying on dashboard fields — which is the guard
+# against an empty build being published over a live site.
+
+[build]
+  publish = "."
+  command = ""
+
+# Photos are large and never change once named, so cache them for a week.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# HTML stays fresh so content edits appear immediately after a deploy.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Serve the styled 404 page instead of Netlify's default.
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

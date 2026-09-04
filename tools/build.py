@@ -29,6 +29,7 @@ Optional metadata block at the top of a content file:
     -->
 """
 
+import json
 import os
 import re
 import sys
@@ -252,6 +253,67 @@ def banner(meta):
 META_RE = re.compile(r"^<!--meta\s*(.*?)-->\s*", re.S)
 RIG_RE = re.compile(r"__RIG:([a-z0-9_]+)__")
 
+# ---------------------------------------------------------------- photos
+# tools/photos.json records each photo's real pixel size and orientation.
+# It is used for two things: stamping width/height on every <img> so the
+# page never reflows as photos load, and refusing to build if a portrait
+# photo has been dropped into a landscape box (or vice versa), which is
+# what mangled the group shots the first time round.
+with open(os.path.join(ROOT, "tools", "photos.json"), encoding="utf-8") as _fh:
+    PHOTOS = json.load(_fh)
+
+IMG_RE = re.compile(r'<img([^>]*?)src="assets/img/([a-z0-9-]+)\.jpg"([^>]*?)>')
+SLOT_RE = re.compile(
+    r'class="([^"]*\b(?:ph-w|ph-t|ph-s|ph-wide|card-media|card-media tall)\b[^"]*)"'
+    r'[^>]*>\s*<img[^>]*src="assets/img/([a-z0-9-]+)\.jpg"')
+
+# which orientations each slot legitimately accepts
+SLOT_OK = {
+    "ph-w":    ("landscape",),
+    "ph-wide": ("landscape",),
+    "ph-t":    ("portrait",),
+    "ph-s":    ("square",),
+    "card-media": ("landscape",),
+}
+
+
+def stamp_images(body, page, problems):
+    """Add real width/height plus lazy loading to every photo."""
+    def repl(m):
+        pre, name, post = m.group(1), m.group(2), m.group(3)
+        meta = PHOTOS.get(name)
+        if not meta:
+            problems.append("%s: unknown photo %s.jpg" % (page, name))
+            return m.group(0)
+        attrs = pre + post
+        add = ""
+        if "width=" not in attrs:
+            add += ' width="%d" height="%d"' % (meta["w"], meta["h"])
+        if "loading=" not in attrs:
+            add += ' loading="lazy" decoding="async"'
+        return '<img%ssrc="assets/img/%s.jpg"%s%s>' % (pre, name, post, add)
+    return IMG_RE.sub(repl, body)
+
+
+def check_orientation(body, page, problems):
+    for cls, name in SLOT_RE.findall(body):
+        meta = PHOTOS.get(name)
+        if not meta:
+            continue
+        slot = "card-media" if "card-media" in cls and "tall" not in cls else None
+        if slot is None:
+            for key in ("ph-wide", "ph-w", "ph-t", "ph-s"):
+                if key in cls.split():
+                    slot = key
+                    break
+        if slot is None:
+            continue
+        ok = SLOT_OK.get(slot)
+        if ok and meta["orient"] not in ok:
+            problems.append(
+                "%s: %s.jpg is %s but sits in .%s (needs %s)"
+                % (page, name, meta["orient"], slot, "/".join(ok)))
+
 
 def parse(src):
     meta, body = {}, src
@@ -275,6 +337,7 @@ def build():
         sys.exit("no content files in " + CONTENT)
 
     missing_rigs, used_rigs = set(), set()
+    problems = []
 
     for key in keys:
         with open(os.path.join(CONTENT, key + ".html"), encoding="utf-8") as fh:
@@ -289,6 +352,8 @@ def build():
             return RIGS[name].strip()
 
         body = RIG_RE.sub(sub_rig, body)
+        check_orientation(body, key + ".html", problems)
+        body = stamp_images(body, key + ".html", problems)
 
         title = meta.get("title", key.title())
         full = title if key == "index" else "%s | %s" % (title, SITE_NAME)
@@ -310,8 +375,14 @@ def build():
     unused = set(RIGS) - used_rigs
     if unused:
         print("note: rigs defined but unused: " + ", ".join(sorted(unused)))
+    if problems:
+        print("\nPHOTO PROBLEMS:")
+        for pr in problems:
+            print("  " + pr)
     if missing_rigs:
         sys.exit("ERROR: content referenced undefined rigs: " + ", ".join(sorted(missing_rigs)))
+    if problems:
+        sys.exit("ERROR: fix the photo problems above (orientation must match the slot).")
 
 
 if __name__ == "__main__":

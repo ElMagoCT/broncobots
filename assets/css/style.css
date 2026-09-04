@@ -47,11 +47,12 @@
   --shell-wide:  min(1420px, 100% - 2.5rem);
   --shell-tight: min(880px, 100% - 2.5rem);
 
-  /* Dense scale — the old one wasted a third of every screen */
-  --pad:         clamp(2.4rem, 4.4vw, 4rem);
-  --pad-sm:      clamp(1.5rem, 2.6vw, 2.25rem);
-  --gap:         clamp(1rem, 1.7vw, 1.5rem);
-  --gap-sm:      .7rem;
+  /* Efficient, not cramped: enough air to read comfortably, without the
+     third-of-a-screen gutters the very first version had. */
+  --pad:         clamp(3.2rem, 5.2vw, 5rem);
+  --pad-sm:      clamp(2rem, 3.2vw, 2.9rem);
+  --gap:         clamp(1.25rem, 2vw, 1.85rem);
+  --gap-sm:      .9rem;
 
   --r:           10px;
   --r-lg:        16px;
@@ -90,7 +91,7 @@ button { font: inherit; color: inherit; }
 h1,h2,h3,h4,h5 {
   font-family: var(--f-disp); font-weight: 700; line-height: 1.03;
   text-transform: uppercase; letter-spacing: -.004em;
-  margin: 0 0 .42em; color: var(--ink);
+  margin: 0 0 .5em; color: var(--ink);
 }
 h1 { font-size: clamp(2.3rem, 5.4vw, 4.1rem); }
 h2 { font-size: clamp(1.65rem, 3.1vw, 2.5rem); }
@@ -102,7 +103,7 @@ p:last-child { margin-bottom: 0; }
 .eyebrow {
   font-family: var(--f-disp); font-size: .78rem; font-weight: 600;
   letter-spacing: .2em; text-transform: uppercase; color: var(--crimson);
-  margin: 0 0 .6rem; display: flex; align-items: center; gap: .55rem;
+  margin: 0 0 .75rem; display: flex; align-items: center; gap: .55rem;
 }
 .eyebrow::before { content: ""; width: 20px; height: 2px; background: currentColor; flex: none; }
 .eyebrow.center { justify-content: center; }
@@ -132,7 +133,7 @@ section.flush { padding: 0; }
 @media (max-width: 780px) { .gx3 { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 @media (max-width: 560px) { .gx2, .gx3 { grid-template-columns: 1fr; } }
 
-.split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.6rem, 3.4vw, 3rem); align-items: center; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 3.8vw, 3.6rem); align-items: center; }
 .split.wide-l { grid-template-columns: 1.35fr 1fr; }
 .split.wide-r { grid-template-columns: 1fr 1.35fr; }
 .split.top { align-items: start; }
@@ -141,11 +142,15 @@ section.flush { padding: 0; }
 .stack > * + * { margin-top: var(--gap-sm); }
 .stack-lg > * + * { margin-top: var(--gap); }
 .row { display: flex; flex-wrap: wrap; gap: var(--gap-sm); align-items: center; }
+/* A heading block sitting directly above a grid needs air, otherwise the
+   type collides with the first row of cards. */
+.lead-in { margin-bottom: clamp(1.4rem, 2.4vw, 2.1rem); }
+.lead-in > :last-child { margin-bottom: 0; }
 .row.center { justify-content: center; }
 .row.between { justify-content: space-between; }
 
 .mt0{margin-top:0!important} .mb0{margin-bottom:0!important}
-.mt1{margin-top:.7rem} .mt2{margin-top:1.4rem} .mt3{margin-top:2.2rem}
+.mt1{margin-top:.9rem} .mt2{margin-top:1.7rem} .mt3{margin-top:2.6rem}
 .full { grid-column: 1 / -1; }
 
 /* Surfaces */
@@ -356,14 +361,20 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
 .hero {
   position: relative; isolation: isolate; overflow: hidden;
   background: var(--ink); color: #fff;
-  padding: clamp(2.2rem, 4.5vw, 3.6rem) 0 0;
+  padding: clamp(3rem, 6vw, 5rem) 0 0;
 }
 .hero-media { position: absolute; inset: 0; z-index: -2; }
-.hero-media img { width: 100%; height: 100%; object-fit: cover; opacity: .42; }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; opacity: .62; }
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(102deg, rgba(12,13,16,.95) 0%, rgba(16,18,22,.78) 44%, rgba(95,12,24,.55) 100%);
+  background:
+    linear-gradient(100deg, rgba(12,13,16,.94) 0%, rgba(13,15,18,.80) 38%, rgba(13,15,18,.42) 68%, rgba(13,15,18,.30) 100%),
+    linear-gradient(rgba(12,13,16,.10), rgba(12,13,16,.45));
 }
+/* Text-only hero over one full-bleed landscape photo. The four-up collage
+   this replaced put a 3:4 portrait into a 4:3 box and stacked to four
+   full-width photos on a phone, burying the fold. */
+.hero-copy { max-width: 44rem; }
 .hero-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: clamp(1.4rem, 3vw, 2.6rem); align-items: center; }
 @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
 .hero h1 { color: #fff; font-size: clamp(2.5rem, 7vw, 5.1rem); margin-bottom: .22em; }
@@ -382,9 +393,9 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
 /* Hero stat rail — sits on the hero's bottom edge, costs no extra height */
 .stat-rail {
   display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
-  border-top: 1px solid rgba(255,255,255,.16); margin-top: 1.2rem;
+  border-top: 1px solid rgba(255,255,255,.16); margin-top: clamp(2rem, 4vw, 3.2rem);
 }
-.stat-rail > div { padding: .8rem 1rem .9rem 0; border-right: 1px solid rgba(255,255,255,.12); }
+.stat-rail > div { padding: 1rem 1rem 1.1rem 0; border-right: 1px solid rgba(255,255,255,.12); }
 .stat-rail > div:last-child { border-right: 0; }
 .stat-rail b { display: block; font-family: var(--f-disp); font-weight: 700; font-size: clamp(1.5rem, 2.7vw, 2.2rem); line-height: 1; color: #fff; }
 .stat-rail small { display: block; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: #9aa1a8; margin-top: .2rem; }
@@ -401,10 +412,12 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
   padding: clamp(1.7rem,3.2vw,2.6rem) 0 clamp(1.7rem,3.2vw,2.4rem);
 }
 .banner-media { position: absolute; inset: 0; z-index: -2; }
-.banner-media img { width: 100%; height: 100%; object-fit: cover; opacity: .34; }
+.banner-media img { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
 .banner::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(98deg, rgba(12,13,16,.94), rgba(20,22,27,.8) 52%, rgba(95,12,24,.62));
+  background:
+    linear-gradient(98deg, rgba(12,13,16,.93), rgba(13,15,18,.80) 46%, rgba(13,15,18,.40) 100%),
+    linear-gradient(rgba(12,13,16,.12), rgba(12,13,16,.42));
 }
 .banner-grid { display: grid; grid-template-columns: 1fr auto; gap: 1.6rem; align-items: center; }
 @media (max-width: 860px) { .banner-grid { grid-template-columns: 1fr; } .banner-fig { display: none; } }
@@ -428,11 +441,15 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
 .card:hover { transform: translateY(-3px); border-color: var(--line-2); box-shadow: var(--sh); }
 .card.plate { border-radius: 0; }
 .card.round { border-radius: var(--r-lg); }
-.card-media { aspect-ratio: 16/10; overflow: hidden; background: var(--paper-3); }
-.card-media.tall { aspect-ratio: 4/5; }
+/* 4:3 is the exact aspect of every landscape photo in this library, so a
+   card crops nothing at all. Only landscape photos belong here — the build
+   refuses a portrait one, because a 3:4 shot in a 16:10 box was losing 53%
+   of its height and cutting people's heads off. */
+.card-media { aspect-ratio: 4/3; overflow: hidden; background: var(--paper-3); }
+.card-media.tall { aspect-ratio: 3/4; }   /* portrait sources only */
 .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s var(--ease); }
 .card:hover .card-media img { transform: scale(1.05); }
-.card-body { padding: 1rem 1.1rem 1.15rem; display: flex; flex-direction: column; flex: 1; }
+.card-body { padding: 1.15rem 1.25rem 1.3rem; display: flex; flex-direction: column; flex: 1; }
 .card-body > .tlink { margin-top: auto; padding-top: .7rem; }
 .card h3 { margin-bottom: .18em; }
 .card p { color: var(--text-2); font-size: .93rem; }
@@ -449,7 +466,7 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
 
 /* Compact feature tile — icon + text, dense */
 .tile {
-  background: #fff; border: 1px solid var(--line); padding: .95rem 1rem;
+  background: #fff; border: 1px solid var(--line); padding: 1.1rem 1.15rem;
   display: flex; gap: .8rem; align-items: flex-start;
   transition: border-color .16s var(--ease), transform .16s var(--ease);
 }
@@ -467,16 +484,18 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
 
 /* Stat plate */
 .stat {
-  border: 1px solid var(--line); background: #fff; padding: .85rem .95rem; position: relative;
+  border: 1px solid var(--line); background: #fff; padding: 1rem 1.1rem; position: relative;
 }
 .stat b { display: block; font-family: var(--f-disp); font-weight: 700; font-size: clamp(1.6rem,2.9vw,2.2rem); line-height: 1; color: var(--maroon); }
-.stat span { display: block; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-top: .3rem; }
+/* Direct child only — a descendant selector here also caught the
+   <span data-count> nested inside <b>, shrinking the big number to 11px. */
+.stat > span { display: block; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-top: .3rem; }
 .bg-ink .stat { background: var(--ink-2); border-color: var(--ink-4); }
 .bg-ink .stat b { color: #fff; }
 
 /* Spec strip — datasheet rows, very dense */
 .spec { border: 1px solid var(--line); background: #fff; font-family: var(--f-mono); font-size: .82rem; }
-.spec div { display: flex; justify-content: space-between; gap: 1rem; padding: .48rem .8rem; border-bottom: 1px solid var(--paper-3); }
+.spec div { display: flex; justify-content: space-between; gap: 1rem; padding: .58rem .95rem; border-bottom: 1px solid var(--paper-3); }
 .spec div:last-child { border-bottom: 0; }
 .spec dt, .spec .k { color: var(--text-3); letter-spacing: .04em; text-transform: uppercase; font-size: .74rem; }
 .spec dd, .spec .v { margin: 0; color: var(--text); font-weight: 500; text-align: right; }
@@ -487,7 +506,7 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
 /* Callout */
 .note {
   background: var(--paper-2); border: 1px solid var(--line); border-left: 3px solid var(--maroon);
-  padding: .9rem 1.05rem;
+  padding: 1.1rem 1.25rem;
 }
 .note h4 { margin-bottom: .28em; }
 .note p { font-size: .92rem; color: var(--text-2); }
@@ -550,7 +569,7 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
 /* Steps that light up with progress */
 .rig-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
 .rig-steps li {
-  border: 1px solid var(--line); background: #fff; padding: .8rem .95rem .85rem 2.6rem;
+  border: 1px solid var(--line); background: #fff; padding: .95rem 1.1rem 1rem 2.7rem;
   position: relative; opacity: .42;
   transition: opacity .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease);
 }
@@ -657,7 +676,7 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
 /* ===========================================================
    People
    =========================================================== */
-.people { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fill, minmax(min(100%,168px), 1fr)); }
+.people { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%,168px), 1fr)); }
 .person { border: 1px solid var(--line); background: #fff; overflow: hidden; transition: transform .16s var(--ease), border-color .16s; }
 .person:hover { transform: translateY(-2px); border-color: var(--crimson); }
 .person .av {
@@ -671,7 +690,7 @@ body.nav-open .burger span::after { transform: translateY(-6px) rotate(-45deg); 
   content: ""; position: absolute; inset: 0;
   background: radial-gradient(circle 2px at 50% 50%, rgba(255,255,255,.13) 96%, transparent 97%) 0 0/13px 13px;
 }
-.person .in { padding: .6rem .7rem .75rem; }
+.person .in { padding: .75rem .85rem .9rem; }
 .person .in b { display: block; font-family: var(--f-disp); font-size: 1rem; letter-spacing: .01em; text-transform: uppercase; }
 .person .in span { display: block; font-size: .72rem; color: var(--crimson); letter-spacing: .07em; text-transform: uppercase; margin-top: .1rem; }
 .person .in p { font-size: .81rem; color: var(--text-2); margin: .35rem 0 0; }
@@ -687,9 +706,9 @@ table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 520
 thead th {
   text-align: left; background: var(--paper-2); font-family: var(--f-disp); font-weight: 600;
   font-size: .78rem; letter-spacing: .11em; text-transform: uppercase; color: var(--text-2);
-  padding: .6rem .85rem; border-bottom: 1px solid var(--line); white-space: nowrap;
+  padding: .7rem .95rem; border-bottom: 1px solid var(--line); white-space: nowrap;
 }
-tbody td { padding: .6rem .85rem; border-bottom: 1px solid var(--paper-3); vertical-align: top; }
+tbody td { padding: .7rem .95rem; border-bottom: 1px solid var(--paper-3); vertical-align: top; }
 tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover { background: #fbfaf9; }
 .bg-ink .tw { background: var(--ink-2); border-color: var(--ink-4); }
@@ -704,7 +723,7 @@ tbody tr:hover { background: #fbfaf9; }
 .faq details { border-bottom: 1px solid var(--paper-3); }
 .faq details:last-child { border-bottom: 0; }
 .faq summary {
-  cursor: pointer; list-style: none; padding: .8rem 2.6rem .8rem 1rem; position: relative;
+  cursor: pointer; list-style: none; padding: .95rem 2.6rem .95rem 1.15rem; position: relative;
   font-family: var(--f-disp); font-weight: 600; font-size: 1.03rem; color: var(--ink); text-transform: none;
 }
 .faq summary::-webkit-details-marker { display: none; }
@@ -716,7 +735,7 @@ tbody tr:hover { background: #fbfaf9; }
 }
 .faq details[open] summary { color: var(--maroon); }
 .faq details[open] summary::after { transform: rotate(225deg); margin-top: -2px; }
-.faq .a { padding: 0 1.1rem .95rem; color: var(--text-2); font-size: .93rem; }
+.faq .a { padding: 0 1.25rem 1.1rem; color: var(--text-2); font-size: .93rem; }
 .faq .a > :first-child { margin-top: 0; }
 .faq .a ul { margin: .4rem 0; padding-left: 1.1rem; }
 .faq .a li { margin-bottom: .3rem; }
@@ -748,8 +767,8 @@ tbody tr:hover { background: #fbfaf9; }
 /* Schedule list */
 .sched { display: grid; gap: .5rem; }
 .sched-item {
-  display: grid; grid-template-columns: 58px 1fr auto; gap: .9rem; align-items: center;
-  background: #fff; border: 1px solid var(--line); padding: .6rem .85rem;
+  display: grid; grid-template-columns: 58px 1fr auto; gap: 1rem; align-items: center;
+  background: #fff; border: 1px solid var(--line); padding: .75rem 1rem;
   transition: border-color .16s var(--ease), transform .16s var(--ease);
 }
 .sched-item:hover { border-color: var(--crimson); transform: translateX(2px); }
@@ -766,8 +785,8 @@ tbody tr:hover { background: #fbfaf9; }
 /* Doc rows */
 .docs { display: grid; gap: .45rem; }
 .doc {
-  display: flex; align-items: center; gap: .85rem; background: #fff;
-  border: 1px solid var(--line); padding: .62rem .85rem;
+  display: flex; align-items: center; gap: .95rem; background: #fff;
+  border: 1px solid var(--line); padding: .78rem 1rem;
   transition: border-color .16s var(--ease), transform .16s var(--ease);
 }
 .doc:hover { border-color: var(--crimson); transform: translateY(-2px); text-decoration: none; }
@@ -787,7 +806,7 @@ tbody tr:hover { background: #fbfaf9; }
 .doc .go { flex: none; color: var(--crimson); }
 
 /* Link cards */
-.lk { display: flex; flex-direction: column; gap: .2rem; background: #fff; border: 1px solid var(--line); padding: .8rem .9rem; transition: border-color .16s, transform .16s; }
+.lk { display: flex; flex-direction: column; gap: .25rem; background: #fff; border: 1px solid var(--line); padding: .95rem 1.05rem; transition: border-color .16s, transform .16s; }
 .lk:hover { border-color: var(--crimson); transform: translateY(-2px); text-decoration: none; }
 .lk b { font-family: var(--f-disp); font-size: 1.02rem; letter-spacing: .01em; color: var(--ink); text-transform: uppercase; }
 .lk span { font-size: .85rem; color: var(--text-2); }
@@ -797,27 +816,35 @@ tbody tr:hover { background: #fbfaf9; }
 .bg-ink .lk span { color: #a4abb2; }
 
 /* ===========================================================
-   Photo mosaic — dense, varied aspect ratios
-   =========================================================== */
-.mosaic { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; }
-.mosaic figure { margin: 0; position: relative; overflow: hidden; background: var(--ink); }
-.mosaic img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s var(--ease), opacity .25s; }
-.mosaic figure:hover img { transform: scale(1.06); opacity: .82; }
-.mosaic figcaption {
-  position: absolute; inset: auto 0 0 0; padding: 1.2rem .65rem .5rem;
-  background: linear-gradient(transparent, rgba(12,13,16,.88)); color: #fff; font-size: .76rem; letter-spacing: .02em;
-}
-.mosaic .w2 { grid-column: span 2; }
-.mosaic .h2 { grid-row: span 2; }
-.mosaic figure > img { aspect-ratio: 4/3; }
-.mosaic .h2 > img { aspect-ratio: auto; height: 100%; }
-@media (max-width: 780px) { .mosaic { grid-template-columns: repeat(2, 1fr); } .mosaic .w2 { grid-column: span 2; } }
+   Photos
 
-.frame { overflow: hidden; border: 1px solid var(--line); }
-.frame img { width: 100%; }
-.frame.r43 img { aspect-ratio: 4/3; object-fit: cover; }
-.frame.r169 img { aspect-ratio: 16/9; object-fit: cover; }
-.frame.r11 img { aspect-ratio: 1; object-fit: cover; }
+   The library is 24 landscape (4:3), 13 portrait (3:4) and 3 square
+   shots. A landscape source therefore goes in a 4:3 box and a portrait
+   one in a 3:4 box — exact matches, so nothing is cropped at all.
+   Crossing the two is what beheaded the group photos in the first pass
+   (a 3:4 shot in a 16:10 box loses 53% of its height), so the sizes
+   below are deliberately named by orientation rather than by slot.
+   =========================================================== */
+.ph { overflow: hidden; background: var(--paper-3); border: 1px solid var(--line); }
+.ph img { width: 100%; height: 100%; object-fit: cover; }
+.ph-w { aspect-ratio: 4/3; }      /* landscape source — no crop */
+.ph-t { aspect-ratio: 3/4; }      /* portrait source  — no crop */
+.ph-s { aspect-ratio: 1/1; }      /* square source    — no crop */
+.ph-wide { aspect-ratio: 16/9; }  /* only for genuinely wide sources */
+.bg-ink .ph { border-color: var(--ink-4); background: var(--ink-2); }
+
+/* Contact strip — one compact row instead of a tall mosaic. Eight photos
+   in the old mosaic cost ~1100px of vertical space; this costs ~180px. */
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .65rem; }
+.strip figure { margin: 0; position: relative; overflow: hidden; border: 1px solid var(--line); background: var(--paper-3); }
+.strip img { width: 100%; aspect-ratio: 4/3; object-fit: cover; transition: transform .4s var(--ease); }
+.strip figure:hover img { transform: scale(1.04); }
+.strip figcaption {
+  position: absolute; inset: auto 0 0 0; padding: 1.4rem .6rem .5rem;
+  background: linear-gradient(transparent, rgba(12,13,16,.78));
+  color: rgba(255,255,255,.92); font-size: .7rem; letter-spacing: .02em;
+}
+.bg-ink .strip figure { border-color: var(--ink-4); }
 
 /* ===========================================================
    Bulletin
@@ -826,7 +853,7 @@ tbody tr:hover { background: #fbfaf9; }
 .bulletin-h { background: var(--ink); color: #fff; padding: .9rem 1.1rem; display: flex; flex-wrap: wrap; gap: .7rem; align-items: center; justify-content: space-between; }
 .bulletin-h h3 { color: #fff; margin: 0; }
 .bulletin-h .iss { font-family: var(--f-mono); font-size: .76rem; color: var(--steel-lt); letter-spacing: .05em; }
-.bulletin-b { padding: 1.1rem 1.2rem 1.3rem; }
+.bulletin-b { padding: 1.35rem 1.5rem 1.6rem; }
 .bulletin-b h4 { font-size: .88rem; letter-spacing: .12em; color: var(--crimson); padding-bottom: .35rem; border-bottom: 1px solid var(--paper-3); margin: 1.3rem 0 .6rem; }
 .bulletin-b h4:first-child { margin-top: 0; }
 .bulletin-b ul { padding-left: 1.1rem; margin: 0 0 .6rem; }
@@ -835,7 +862,7 @@ tbody tr:hover { background: #fbfaf9; }
 /* ===========================================================
    Forms
    =========================================================== */
-.form { background: #fff; border: 1px solid var(--line); padding: clamp(1.1rem,2vw,1.6rem); }
+.form { background: #fff; border: 1px solid var(--line); padding: clamp(1.35rem,2.4vw,2rem); }
 .field { margin-bottom: .85rem; }
 .field label { display: block; font-family: var(--f-disp); font-weight: 600; font-size: .82rem; letter-spacing: .09em; text-transform: uppercase; color: var(--text-2); margin-bottom: .3rem; }
 .field input, .field select, .field textarea {
@@ -922,7 +949,7 @@ fieldset legend { font-family: var(--f-disp); font-weight: 600; font-size: .82re
 /* Pinned tracks only get their scroll length when JS is running,
    so a no-JS page has no dead space. */
 .rig-track { height: auto; }
-html.js .rig-track { height: calc(var(--len, 2) * 100vh); }
+html.js .rig-track { height: max(calc(var(--len, 1.7) * 100vh), 1100px); }
 html.reduced .rig-track { height: auto; }
 html.reduced .rig-stage { position: static; height: auto; }
 

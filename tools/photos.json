@@ -1,0 +1,243 @@
+{
+ "alliance-partners": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "assembly-crowd": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "build-session": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "cobra-crunch-group": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "field-flag": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "fll-mentoring": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "fll-mentoring-w": {
+  "h": 562,
+  "note": "4:3 crop of the portrait original, for landscape slots",
+  "orient": "landscape",
+  "ratio": 1.335,
+  "w": 750
+ },
+ "frc-991-award": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "frc-991-robot": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "ftc-202-team": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "ftc-demo-parents": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "ftc-field-night": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "ftc-medal": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "ftc-pit-work": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "ftc-robot-bench": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "ftc-robot-solo": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.641,
+  "w": 641
+ },
+ "ftc-scrimmage": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "ftc-selfie-pit": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "ftc-team-robot": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "hero-field": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "inspection": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "kit-workshop": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "open-house-parents": {
+  "h": 890,
+  "orient": "landscape",
+  "ratio": 1.325,
+  "w": 1179
+ },
+ "outreach-fair": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "parade-robot": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "pit-crew": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "pit-lineup": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "practice-field": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "programming-pit": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "shop-build": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "showcase-chapel": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "stands-crew": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ },
+ "team-retreat": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "team-stage": {
+  "h": 1000,
+  "orient": "square",
+  "ratio": 0.994,
+  "w": 994
+ },
+ "team-stage-wide": {
+  "h": 1179,
+  "orient": "square",
+  "ratio": 0.992,
+  "w": 1170
+ },
+ "team-travel": {
+  "h": 750,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1000
+ },
+ "team-vegas": {
+  "h": 844,
+  "orient": "landscape",
+  "ratio": 1.777,
+  "w": 1500
+ },
+ "team-winter": {
+  "h": 620,
+  "orient": "landscape",
+  "ratio": 1.613,
+  "w": 1000
+ },
+ "trophy": {
+  "h": 1000,
+  "orient": "portrait",
+  "ratio": 0.75,
+  "w": 750
+ },
+ "venue-wide": {
+  "h": 1125,
+  "orient": "landscape",
+  "ratio": 1.333,
+  "w": 1500
+ }
+}

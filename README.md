@@ -44,40 +44,70 @@ Then open <http://localhost:8752>. There is no build step for viewing — the
 
 ## Pages
 
-| Page | File | Notes |
-| --- | --- | --- |
-| Home | `index.html` | Copy is verbatim from the original Google Site |
-| Programs | `programs.html` | Overview + FRC/FTC/FLL comparison table |
-| FRC 991 | `frc.html` | Subteams, season rhythm, gallery |
-| FTC Teams | `ftc.html` | Teams 201, 202, 23737, 26983, 30596 |
-| FLL | `fll.html` | Loyola Academy mentoring program |
-| About | `about.html` | Mission, creed, how the team is run |
-| Our History | `history.html` | Placeholder milestone timeline |
-| Leadership | `leadership.html` | Placeholder roster |
-| Competitions | `competitions.html` | Placeholder schedule + awards |
-| **Parent Information** | `parents.html` | **New page** — see below |
-| Calendar | `calendar.html` | Live Google Calendar embed |
-| Documents | `documents.html` | Placeholder forms/handbook links |
-| Weekly Bulletin | `bulletin.html` | Placeholder current issue + archive |
-| Links | `links.html` | Real external links (FIRST, tools, vendors) |
-| Join Us | `join.html` | Placeholder mailing-list form |
-| Not found | `404.html` | |
+Navigation is organised around why somebody is visiting, not around internal
+structure.
 
-## The parent information page
+| Section | Page | File | Signature figure |
+| --- | --- | --- | --- |
+| — | Home | `index.html` | **shooter** — drives on, elevates, spins up, scores |
+| Teams | All six teams | `teams.html` | **scale** — three robots to scale, chip-selectable |
+| Teams | FRC 991 | `frc.html` | **lift** — three-stage elevator places a game piece |
+| Teams | FTC teams | `ftc.html` | **cube** — the 18″ rule, arm unfolds past it |
+| Teams | FLL mentoring | `fll.html` | **mission** — robot drives the table, blocks assemble |
+| About | Our story | `about.html` | **gears** — the creed as a working gear train |
+| About | Leadership | `leadership.html` | **signal** — hub sends signal to each subteam |
+| About | Results & awards | `results.html` | **board** — alliance scoreboard fills in |
+| Join | Students | `join.html` | **builder** — pick a subteam, it lights up (interactive) |
+| Join | For parents | `parents.html` | **matchclock** — a real 2:30 match, scrubbed |
+| Join | Sponsors & mentors | `support.html` | **power** — support as power distribution |
+| — | Calendar | `calendar.html` | **track** — a robot drives the season |
+| Resources | Weekly bulletin | `bulletin.html` | **status** — diagnostic panel boots up |
+| Resources | Documents & forms | `documents.html` | **checklist** — inspection ticks off |
+| Resources | Links & tools | `links.html` | **traces** — PCB traces energise |
+| — | Not found | `404.html` | **wheeloff** — a wheel comes off |
 
-`parents.html` is the new page that did not exist on the original site. It
-explains, in plain English for a non-technical parent:
+### Renamed pages
 
-- what *FIRST* Tech Challenge actually is (the game, the robot, a match, awards)
-- a month-by-month season timeline
-- an honest three-tier time-commitment table
-- what a student learns, technical and otherwise
-- costs, and that assistance is available
-- six concrete ways parents can help
-- what to expect on a competition day
-- how shop safety actually works
-- a FAQ accordion
-- a glossary translating the *FIRST* acronym soup
+The 2026 reorganisation renamed three files. `netlify.toml` holds 301s so every
+previously published URL still works:
+
+| Old | New |
+| --- | --- |
+| `programs.html` | `teams.html` |
+| `competitions.html` | `results.html` |
+| `history.html` | `about.html` (History merged into Our Story) |
+
+`support.html` is new, so Join now covers students, parents and supporters
+together rather than scattering them.
+
+## The scroll rigs
+
+All sixteen figures live in `tools/rigs.py` as plain inline SVG and share one
+parts vocabulary (`.fr`/`.fr2`/`.ac`/`.wire`/`.dim` materials, the same gear
+tooth geometry and lightening-hole pattern), which is what makes very different
+animations read as one machine shop. `assets/js/site.js` drives them.
+
+Two mechanisms:
+
+- **Pinned scrubber** — `.rig-track[data-rig="name"]` with `--len` in viewport
+  multiples. Stage and copy both pin, so the scroll distance is spent scrubbing
+  the animation rather than scrolling past blank space. Used on the five
+  flagship pages.
+- **Inline figure** — `[data-rig="name"]` anywhere else. Animates as it passes
+  through the viewport at **zero extra page height**. Used on the other ten.
+
+Each figure exposes animated pieces as `data-part="..."` hooks; a handler in the
+`RIGS` registry receives `(element, progress 0..1)`. To add one, write the SVG
+in `rigs.py`, add a handler with the same key in `site.js`, and drop
+`__RIG:name__` into a content file.
+
+Interactive figures use `data-chips="<figure>" data-panels="<panels>"` on a chip
+row; the selected key highlights `[data-module]` in the figure and reveals the
+matching `[data-panel]`.
+
+**Without JavaScript** every page still works: pinned tracks collapse to normal
+flow (no dead space), and each figure renders in its resting pose. The same
+applies under `prefers-reduced-motion`.
 
 ## Editing
 
@@ -151,11 +181,12 @@ Everything below is a deliberate placeholder:
    says so. Point it at Netlify Forms, a Google Form, or the team inbox.
 3. **Documents** — every link on `documents.html` is `href="#"`.
 4. **Roster** — all names on `leadership.html`. Check with families before
-   publishing student names or photos.
-5. **History and results** — the timelines on `history.html` and tables on
-   `competitions.html` are structured templates, not the real record.
+   publishing student names or photos (the repo is public, so git history counts).
+5. **History and results** — the timeline on `about.html` and the tables on
+   `results.html` are structured templates, not the real record.
 6. **Stats** — team counts, student counts, seasons, dues, and hour estimates.
 7. **Social links** — not yet added anywhere.
+8. **Sponsorship tiers** — amounts and benefits on `support.html`.
 
 Placeholder content is marked in the UI with gold "placeholder" callouts and a
 note in the footer, so nothing accidentally reads as fact.

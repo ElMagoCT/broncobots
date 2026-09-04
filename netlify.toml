@@ -35,6 +35,28 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# ---------------------------------------------------------------------------
+# The 2026 reorganisation renamed three pages. These keep every previously
+# published URL working instead of 404ing.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/programs.html"
+  to = "/teams.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/competitions.html"
+  to = "/results.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/history.html"
+  to = "/about.html"
+  status = 301
+  force = true
+
 # Serve the styled 404 page instead of Netlify's default.
 [[redirects]]
   from = "/*"

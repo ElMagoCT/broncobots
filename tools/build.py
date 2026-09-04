@@ -2,16 +2,20 @@
 """
 Brophy Broncobots site builder.
 
-Plain static output — no runtime dependencies, no framework. This script only
-exists so the header, nav and footer live in ONE place instead of being copy-
-pasted into every page.
+Plain static output — no runtime dependencies, no framework. This script exists
+so the header, nav and footer live in ONE place, and so the sixteen robot
+figures in rigs.py can be dropped into pages by name.
 
     python3 tools/build.py
 
 Reads   tools/content/<key>.html   (the body of each page)
 Writes  <key>.html                (a complete, standalone page)
 
-Each content file may start with an optional metadata block:
+Substitutions available inside a content file:
+    __RIG:shooter__   -> the named inline SVG figure from rigs.py
+    __CAL_ID__        -> the URL-encoded team calendar id
+
+Optional metadata block at the top of a content file:
 
     <!--meta
     title: Page title
@@ -20,8 +24,8 @@ Each content file may start with an optional metadata block:
     eyebrow: Section label
     h1: Big heading
     lede: One-sentence intro under the heading.
-    crumbs: About > Our History
-    hero: 1                      # use the tall home hero instead of a banner
+    crumbs: About > Leadership
+    hero: 1            # page supplies its own hero, skip the banner
     -->
 """
 
@@ -29,93 +33,104 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from rigs import RIGS  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = os.path.join(ROOT, "tools", "content")
 
 SITE_NAME = "Brophy Broncobots"
+YEAR = "2026"
 CAL_ID = "c_fe5d5cf7876ce9370b0a59588eee129457c6d5419cf31494028a567a9d710e06@group.calendar.google.com"
 
 # ---------------------------------------------------------------- navigation
-# (label, href, [children])  — children are (label, href, blurb)
+# (label, href, overview_label_or_None, [(label, href, blurb), ...])
+#
+# Reorganised around why somebody is here rather than around internal
+# structure: what we compete in / who we are / how to get involved / when
+# things happen / reference material.
 NAV = [
-    ("Home", "index.html", []),
-    ("Programs", "programs.html", [
-        ("FRC 991", "frc.html", "Our flagship competition team"),
-        ("FTC Teams", "ftc.html", "Five student-led squads"),
-        ("FLL", "fll.html", "Mentoring Loyola Academy scholars"),
+    ("Home", "index.html", None, []),
+    ("Teams", "teams.html", "All six teams", [
+        ("FRC 991", "frc.html", "Flagship team, spring season"),
+        ("FTC Teams", "ftc.html", "Five squads, fall season"),
+        ("FLL Mentoring", "fll.html", "We coach Loyola Academy"),
     ]),
-    ("About", "about.html", [
-        ("Our History", "history.html", "How the program grew"),
-        ("Leadership", "leadership.html", "Students and mentors"),
-        ("Competitions", "competitions.html", "Where we compete"),
+    ("About", "about.html", "Our story", [
+        ("Leadership", "leadership.html", "Students run this program"),
+        ("Results & Awards", "results.html", "How we have done"),
     ]),
-    ("Parents", "parents.html", []),
-    ("Calendar", "calendar.html", []),
-    ("Resources", "documents.html", [
-        ("Documents", "documents.html", "Forms, handbook, safety"),
+    ("Join", "join.html", "Students — start here", [
+        ("For Parents", "parents.html", "What FTC is, plainly"),
+        ("Sponsors & Mentors", "support.html", "Give time, skills or funds"),
+    ]),
+    ("Calendar", "calendar.html", None, []),
+    ("Resources", "bulletin.html", None, [
         ("Weekly Bulletin", "bulletin.html", "What is happening this week"),
-        ("Links", "links.html", "FIRST, tools and partners"),
+        ("Documents & Forms", "documents.html", "Paperwork and handbook"),
+        ("Links & Tools", "links.html", "FIRST, software, vendors"),
     ]),
 ]
 
-# every page key -> the top-level nav item it should highlight
+# page key -> the top-level nav item it should highlight
 ACTIVE_MAP = {
     "index": "Home",
-    "programs": "Programs", "frc": "Programs", "ftc": "Programs", "fll": "Programs",
-    "about": "About", "history": "About", "leadership": "About", "competitions": "About",
-    "parents": "Parents",
+    "teams": "Teams", "frc": "Teams", "ftc": "Teams", "fll": "Teams",
+    "about": "About", "leadership": "About", "results": "About",
+    "join": "Join", "parents": "Join", "support": "Join",
     "calendar": "Calendar",
-    "documents": "Resources", "bulletin": "Resources", "links": "Resources",
-    "join": "", "404": "",
+    "bulletin": "Resources", "documents": "Resources", "links": "Resources",
+    "404": "",
 }
 
 
-def nav_html(active_label):
+def nav_html(active):
     out = ['<nav class="nav" id="site-nav" aria-label="Main">', "<ul>"]
-    for label, href, kids in NAV:
-        is_active = label == active_label
+    for label, href, ov, kids in NAV:
+        act = label == active
         if kids:
             out.append("<li>")
-            out.append(
-                '<button class="navbtn" type="button" aria-expanded="false"%s>%s<i class="caret"></i></button>'
-                % (" data-active" if is_active else "", label)
-            )
+            out.append('<button class="navbtn" type="button" aria-expanded="false"%s>%s'
+                       '<i class="caret"></i></button>' % (" data-active" if act else "", label))
             out.append('<ul class="dropdown">')
-            out.append('<li><a href="%s">%s<small>Overview</small></a></li>' % (href, label))
-            for klabel, khref, kblurb in kids:
-                out.append('<li><a href="%s">%s<small>%s</small></a></li>' % (khref, klabel, kblurb))
+            if ov:
+                out.append('<li><a href="%s">%s<small>Overview</small></a></li>' % (href, ov))
+            for kl, kh, kb in kids:
+                out.append('<li><a href="%s">%s<small>%s</small></a></li>' % (kh, kl, kb))
             out.append("</ul></li>")
         else:
-            cur = ' aria-current="page"' if is_active else ""
-            out.append('<li><a href="%s"%s>%s</a></li>' % (href, cur, label))
+            out.append('<li><a href="%s"%s>%s</a></li>'
+                       % (href, ' aria-current="page"' if act else "", label))
     out.append("</ul>")
-    out.append('<div class="nav-cta"><a class="btn sm" href="join.html">Join Us <span class="arrow">&rsaquo;</span></a></div>')
+    out.append('<div class="nav-cta"><a class="btn sm" href="join.html">Join Us '
+               '<span class="arrow">&rsaquo;</span></a></div>')
     out.append("</nav>")
     return "\n".join(out)
 
 
 HEADER = """<a class="skip" href="#main">Skip to main content</a>
 <div class="topbar">
-  <div class="shell">
+  <div class="shell-wide">
     <span class="creed">Trust &middot; Respect &middot; Commitment</span>
     <span class="links">
-      <a href="parents.html">Parent Info</a>
-      <a href="bulletin.html">Weekly Bulletin</a>
-      <a href="join.html">Contact</a>
+      <a href="parents.html">Parents</a>
+      <a href="bulletin.html">Bulletin</a>
+      <a href="calendar.html">Calendar</a>
     </span>
   </div>
 </div>
 <header class="site-header">
-  <div class="shell">
+  <div class="shell-wide">
     <a class="brand" href="index.html">
-      <img src="assets/img/logo-mark.png" alt="" width="46" height="46">
-      <span class="brand-text">
+      <img src="assets/img/logo-mark.png" alt="" width="38" height="38">
+      <span>
         <span class="brand-name">Broncobots</span>
         <span class="brand-sub">Brophy College Preparatory</span>
       </span>
     </a>
     __NAV__
-    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span></button>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false"
+            aria-controls="site-nav"><span></span></button>
   </div>
 </header>
 <div class="scrim" aria-hidden="true"></div>"""
@@ -123,52 +138,59 @@ HEADER = """<a class="skip" href="#main">Skip to main content</a>
 
 FOOTER = """<footer class="site-footer">
   <div class="shell">
-    <div class="footer-grid">
+    <div class="fgrid">
       <div>
-        <div class="footer-brand">
+        <div class="fbrand">
           <img src="assets/img/logo-mark.png" alt="">
           <span>
             <b>Broncobots</b>
             <span>Brophy College Preparatory</span>
           </span>
         </div>
-        <p class="small">Student-led robotics at Brophy College Preparatory in Phoenix, Arizona.
-          One <em>FIRST</em> Robotics Competition team, five <em>FIRST</em> Tech Challenge teams,
-          and a mentoring program for Loyola Academy scholars.</p>
-        <p class="footer-creed">Trust. Respect. Commitment.</p>
+        <p class="small">Student-led robotics in Phoenix, Arizona. One <em>FIRST</em> Robotics
+          Competition team, five <em>FIRST</em> Tech Challenge teams, and a mentoring program for
+          Loyola Academy scholars.</p>
+        <p class="fcreed">Trust. Respect. Commitment.</p>
       </div>
       <div>
-        <h4>Programs</h4>
+        <h4>Teams</h4>
         <ul>
+          <li><a href="teams.html">All six teams</a></li>
           <li><a href="frc.html">FRC 991</a></li>
-          <li><a href="ftc.html">FTC Teams</a></li>
-          <li><a href="fll.html">FLL Mentoring</a></li>
-          <li><a href="competitions.html">Competitions</a></li>
+          <li><a href="ftc.html">FTC teams</a></li>
+          <li><a href="fll.html">FLL mentoring</a></li>
         </ul>
       </div>
       <div>
-        <h4>For Families</h4>
+        <h4>About</h4>
         <ul>
-          <li><a href="parents.html">Parent Information</a></li>
-          <li><a href="calendar.html">Team Calendar</a></li>
-          <li><a href="documents.html">Documents &amp; Forms</a></li>
-          <li><a href="bulletin.html">Weekly Bulletin</a></li>
-          <li><a href="join.html">Join / Contact</a></li>
+          <li><a href="about.html">Our story</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="results.html">Results &amp; awards</a></li>
         </ul>
       </div>
       <div>
-        <h4>Find Us</h4>
+        <h4>Get involved</h4>
         <ul>
-          <li>4701 N Central Ave<br>Phoenix, AZ 85012</li>
-          <li><a href="mailto:broncobots@brophyprep.org">broncobots@brophyprep.org</a></li>
-          <li><a href="https://www.brophyprep.org" target="_blank" rel="noopener">brophyprep.org</a></li>
-          <li><a href="https://www.firstinspires.org" target="_blank" rel="noopener">firstinspires.org</a></li>
+          <li><a href="join.html">Students</a></li>
+          <li><a href="parents.html">Parents</a></li>
+          <li><a href="support.html">Sponsors &amp; mentors</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Season</h4>
+        <ul>
+          <li><a href="calendar.html">Calendar</a></li>
+          <li><a href="bulletin.html">Weekly bulletin</a></li>
+          <li><a href="documents.html">Documents</a></li>
+          <li><a href="links.html">Links &amp; tools</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>&copy; __YEAR__ Brophy Broncobots. <em>FIRST</em>, FRC, FTC and <em>FIRST</em> LEGO League are trademarks of <em>FIRST</em>.</span>
-      <span class="placeholder-note">Draft rebuild &mdash; contact details and rosters are placeholders.</span>
+    <div class="fbot">
+      <span>&copy; __YEAR__ Brophy Broncobots &middot; 4701 N Central Ave, Phoenix AZ 85012 &middot;
+        <em>FIRST</em>, FRC, FTC and <em>FIRST</em> LEGO League are trademarks of <em>FIRST</em>.</span>
+      <span class="ph">Draft rebuild &mdash; rosters and contact details are placeholders.</span>
     </div>
   </div>
 </footer>
@@ -209,27 +231,26 @@ __FOOTER__
 def banner(meta):
     crumbs = ""
     if meta.get("crumbs"):
-        parts = [p.strip() for p in meta["crumbs"].split(">")]
         bits = ['<a href="index.html">Home</a>']
-        for p in parts:
+        for p in [x.strip() for x in meta["crumbs"].split(">")]:
             bits.append("<span>/</span>")
             bits.append(p)
         crumbs = '<div class="crumbs">%s</div>' % "".join(bits)
-    img = meta.get("banner_img", "assets/img/pit-lineup.jpg")
     eyebrow = '<p class="eyebrow">%s</p>' % meta["eyebrow"] if meta.get("eyebrow") else ""
     lede = '<p class="lede">%s</p>' % meta["lede"] if meta.get("lede") else ""
     return """<section class="banner">
   <div class="banner-media"><img src="%s" alt=""></div>
   <div class="shell">
-    %s
-    %s
+    %s%s
     <h1>%s</h1>
     %s
   </div>
-</section>""" % (img, crumbs, eyebrow, meta.get("h1", ""), lede)
+</section>""" % (meta.get("banner_img", "assets/img/pit-lineup.jpg"), crumbs, eyebrow,
+                 meta.get("h1", ""), lede)
 
 
 META_RE = re.compile(r"^<!--meta\s*(.*?)-->\s*", re.S)
+RIG_RE = re.compile(r"__RIG:([a-z0-9_]+)__")
 
 
 def parse(src):
@@ -251,28 +272,46 @@ def build():
         sys.exit("missing content dir: " + CONTENT)
     keys = sorted(f[:-5] for f in os.listdir(CONTENT) if f.endswith(".html"))
     if not keys:
-        sys.exit("no content files found in " + CONTENT)
+        sys.exit("no content files in " + CONTENT)
+
+    missing_rigs, used_rigs = set(), set()
+
     for key in keys:
         with open(os.path.join(CONTENT, key + ".html"), encoding="utf-8") as fh:
             meta, body = parse(fh.read())
 
+        def sub_rig(m):
+            name = m.group(1)
+            if name not in RIGS:
+                missing_rigs.add(name)
+                return "<!-- missing rig: %s -->" % name
+            used_rigs.add(name)
+            return RIGS[name].strip()
+
+        body = RIG_RE.sub(sub_rig, body)
+
         title = meta.get("title", key.title())
-        full_title = title if key == "index" else "%s | %s" % (title, SITE_NAME)
-        top = "" if meta.get("hero") else banner(meta)
+        full = title if key == "index" else "%s | %s" % (title, SITE_NAME)
 
         html = (PAGE
                 .replace("__HEADER__", HEADER.replace("__NAV__", nav_html(ACTIVE_MAP.get(key, ""))))
-                .replace("__FOOTER__", FOOTER.replace("__YEAR__", "2026"))
-                .replace("__TITLE__", full_title)
+                .replace("__FOOTER__", FOOTER.replace("__YEAR__", YEAR))
+                .replace("__TITLE__", full)
                 .replace("__DESC__", meta.get("desc", "Student-led robotics at Brophy College Preparatory."))
-                .replace("__TOP__", top)
+                .replace("__TOP__", "" if meta.get("hero") else banner(meta))
                 .replace("__BODY__", body.strip())
                 .replace("__CAL_ID__", CAL_ID.replace("@", "%40")))
 
         with open(os.path.join(ROOT, key + ".html"), "w", encoding="utf-8") as fh:
             fh.write(html)
-        print("built %-16s %6.1f KB" % (key + ".html", len(html) / 1024))
+        print("built %-18s %6.1f KB" % (key + ".html", len(html) / 1024))
+
     print("\n%d pages -> %s" % (len(keys), ROOT))
+    unused = set(RIGS) - used_rigs
+    if unused:
+        print("note: rigs defined but unused: " + ", ".join(sorted(unused)))
+    if missing_rigs:
+        sys.exit("ERROR: content referenced undefined rigs: " + ", ".join(sorted(missing_rigs)))
 
 
 if __name__ == "__main__":

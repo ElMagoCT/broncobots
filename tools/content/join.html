@@ -1,115 +1,141 @@
 <!--meta
 title: Join Us
-desc: Join the Brophy Broncobots mailing list — for students, parents, mentors, and sponsors.
+desc: How Brophy students join the Broncobots — pick a subteam, do the safety training, and start building. No experience required.
 banner_img: assets/img/stands-crew.jpg
-eyebrow: Get involved
-h1: Join Us
-lede: Students, parents, mentors, and sponsors — there is a way in for all four. Tell us which one you are.
-crumbs: Join Us
+eyebrow: Join / Students
+h1: Join the Team
+lede: No tryouts, no cut, no experience required. Pick the part of the robot you want to own and we will teach you the rest.
+crumbs: Join
 -->
 
-<section>
-  <div class="shell split" style="align-items:start">
-    <div class="reveal">
-      <p class="eyebrow">Mailing list &amp; contact</p>
-      <h2>Get on the list</h2>
-      <p class="lede">The team email list is how we announce interest meetings, schedule changes, competition-day
-        logistics, and volunteer needs. Low volume, no spam.</p>
-      <div class="form-card mt2">
-        <form data-placeholder-form>
-          <div class="field-row">
-            <div class="field">
-              <label for="fname">First name</label>
-              <input id="fname" name="fname" type="text" autocomplete="given-name" required>
-            </div>
-            <div class="field">
-              <label for="lname">Last name</label>
-              <input id="lname" name="lname" type="text" autocomplete="family-name" required>
-            </div>
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="email" required>
-            <p class="hint">Students: use your school address if you have one.</p>
-          </div>
-          <fieldset>
-            <legend>I am a&hellip;</legend>
-            <label class="checkrow"><input type="radio" name="role" value="student" checked> Brophy student interested in joining</label>
-            <label class="checkrow"><input type="radio" name="role" value="parent"> Parent or guardian</label>
-            <label class="checkrow"><input type="radio" name="role" value="mentor"> Prospective mentor or volunteer</label>
-            <label class="checkrow"><input type="radio" name="role" value="sponsor"> Prospective sponsor</label>
-            <label class="checkrow"><input type="radio" name="role" value="alum"> Broncobots alum</label>
-          </fieldset>
-          <fieldset>
-            <legend>Interested in (check any)</legend>
-            <label class="checkrow"><input type="checkbox" name="interest" value="ftc"> FTC &mdash; <em>FIRST</em> Tech Challenge</label>
-            <label class="checkrow"><input type="checkbox" name="interest" value="frc"> FRC 991</label>
-            <label class="checkrow"><input type="checkbox" name="interest" value="fll"> Mentoring an FLL team</label>
-            <label class="checkrow"><input type="checkbox" name="interest" value="business"> Business, media, or outreach</label>
-            <label class="checkrow"><input type="checkbox" name="interest" value="unsure"> Not sure yet &mdash; just curious</label>
-          </fieldset>
-          <div class="field">
-            <label for="grade">Grade (students only)</label>
-            <select id="grade" name="grade">
-              <option value="">&mdash; Select &mdash;</option>
-              <option>9th</option><option>10th</option><option>11th</option><option>12th</option>
-              <option>Loyola Academy scholar</option>
-              <option>Not a student</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="msg">Anything you want to tell us?</label>
-            <textarea id="msg" name="msg" placeholder="Questions, a skill you could mentor, a company that might sponsor — anything."></textarea>
-          </div>
-          <button class="btn" type="submit">Send it <span class="arrow">&rsaquo;</span></button>
-          <p class="hint mt2">Placeholder form &mdash; not connected to anything yet. Wire it to Netlify Forms, a
-            Google Form, or the team inbox before publishing.</p>
-        </form>
-      </div>
+<!-- ===== Interactive: pick a subteam ===== -->
+<section class="bg-2">
+  <div class="shell">
+    <div class="row between" style="margin-bottom:.9rem;align-items:flex-end">
+      <div><p class="eyebrow">Interactive</p><h2 class="mb0">What would you own?</h2></div>
+      <p class="small muted mb0">Pick a subteam to light up its part of the robot.</p>
     </div>
-
-    <div class="reveal stack">
-      <div class="callout">
-        <h4>Students &mdash; how to actually join</h4>
-        <ol class="steps mt2" style="gap:1rem">
-          <li><h4>Come to a meeting</h4><p>No sign-up needed for your first one. Check the <a href="calendar.html">calendar</a> for the next all-hands.</p></li>
-          <li><h4>Do the safety training</h4><p>A short session before you can use the shop. Runs regularly in August and September.</p></li>
-          <li><h4>Pick a subteam</h4><p>Try a few. Mechanical, software, electrical, strategy, business &mdash; nobody is locked in after week one.</p></li>
-          <li><h4>Turn in paperwork</h4><p>Registration, safety agreement, and media release. All on the <a href="documents.html">documents page</a>.</p></li>
-        </ol>
+    <div class="split wide-l top">
+      <div class="figbox cut-all" id="buildFig">
+        <div class="fig">__RIG:builder__</div>
       </div>
-      <div class="callout">
-        <h4>Parents</h4>
-        <p>Start with the <a href="parents.html">parent information page</a> &mdash; it explains what FTC is, the real
-          time commitment, costs, and the handful of things that genuinely help the team most.</p>
-      </div>
-      <div class="callout">
-        <h4>Mentors &amp; sponsors</h4>
-        <p>We need machining, software, business, and public-speaking help far more often than we need money &mdash;
-          though we need that too. If your employer has a matching-gift program or an engineering team, that
-          introduction goes a long way.</p>
-      </div>
-      <div class="imgframe ratio-43"><img src="assets/img/team-stage.jpg" alt="The team together at an event"></div>
-      <div class="callout">
-        <h4>Direct contact</h4>
-        <p><b>Broncobots moderators</b><br>
-          <a href="mailto:broncobots@brophyprep.org">broncobots@brophyprep.org</a><br>
-          <span class="small muted">Placeholder address &mdash; confirm before publishing.</span></p>
-        <p class="mt2"><b>Brophy College Preparatory</b><br>
-          4701 N Central Ave<br>Phoenix, AZ 85012</p>
+      <div id="buildPanels">
+        <div class="chips" data-chips="#buildFig" data-panels="#buildPanels" style="margin-bottom:.9rem">
+          <button class="chip" data-key="mech" aria-selected="true">Mechanical</button>
+          <button class="chip" data-key="elec">Electrical</button>
+          <button class="chip" data-key="soft">Software</button>
+          <button class="chip" data-key="strat">Strategy</button>
+          <button class="chip" data-key="biz">Business</button>
+          <button class="chip" data-key="drive">Drive team</button>
+        </div>
+        <div data-panel="mech">
+          <h3>Mechanical</h3>
+          <p>The chassis, the drivetrain and whatever mechanism scores this year&rsquo;s game. You will
+            learn parametric CAD in Onshape, then actually machine the part you drew.</p>
+          <div class="spec cut-tr mt1"><div><span class="k">You learn</span><span class="v">Onshape CAD, machining, tolerances</span></div>
+            <div><span class="k">Week one</span><span class="v">Tool training, then a real bracket</span></div>
+            <div><span class="k">Good if</span><span class="v">You like making physical things</span></div></div>
+        </div>
+        <div data-panel="elec" hidden>
+          <h3>Electrical</h3>
+          <p>Power distribution, motor controllers, sensors and a wiring harness that has to survive being
+            hit by another robot at full speed.</p>
+          <div class="spec cut-tr mt1"><div><span class="k">You learn</span><span class="v">Wiring, crimping, diagnostics</span></div>
+            <div><span class="k">Week one</span><span class="v">Build a test harness</span></div>
+            <div><span class="k">Good if</span><span class="v">You like finding the one loose wire</span></div></div>
+        </div>
+        <div data-panel="soft" hidden>
+          <h3>Software</h3>
+          <p>Java on the control hub. Autonomous routines, sensor feedback, and driver-assist features you
+            develop with the people actually driving.</p>
+          <div class="spec cut-tr mt1"><div><span class="k">You learn</span><span class="v">Java, git, control loops</span></div>
+            <div><span class="k">Week one</span><span class="v">Make a motor move on command</span></div>
+            <div><span class="k">Good if</span><span class="v">You want code with physical consequences</span></div></div>
+        </div>
+        <div data-panel="strat" hidden>
+          <h3>Strategy &amp; scouting</h3>
+          <p>Read the game manual harder than anyone else, build the match database, and tell the drive
+            team who to pick at alliance selection.</p>
+          <div class="spec cut-tr mt1"><div><span class="k">You learn</span><span class="v">Data collection, game analysis</span></div>
+            <div><span class="k">Week one</span><span class="v">Scout a practice match</span></div>
+            <div><span class="k">Good if</span><span class="v">You argue well and like spreadsheets</span></div></div>
+        </div>
+        <div data-panel="biz" hidden>
+          <h3>Business &amp; media</h3>
+          <p>Sponsorship, the budget, the engineering notebook and the awards submissions &mdash; the
+            categories that decide advancement as often as the scoreboard.</p>
+          <div class="spec cut-tr mt1"><div><span class="k">You learn</span><span class="v">Writing, design, presenting</span></div>
+            <div><span class="k">Week one</span><span class="v">Draft a sponsor letter</span></div>
+            <div><span class="k">Good if</span><span class="v">You want to run the non-robot half</span></div></div>
+        </div>
+        <div data-panel="drive" hidden>
+          <h3>Drive team</h3>
+          <p>Driver, operator, human player and coach. Selected by tryout, and they practise more than
+            anyone else on the team.</p>
+          <div class="spec cut-tr mt1"><div><span class="k">You learn</span><span class="v">Composure, comms, muscle memory</span></div>
+            <div><span class="k">Week one</span><span class="v">Practice field time</span></div>
+            <div><span class="k">Good if</span><span class="v">You are calm when it counts</span></div></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="cta-strip">
-  <img class="gear-bg" src="assets/img/logo-mark.png" alt="">
-  <div class="shell inner">
+<section>
+  <div class="shell split wide-r top">
     <div>
-      <p class="eyebrow" style="color:#fff">One more time, for the record</p>
+      <p class="eyebrow">Four steps</p>
+      <h2>How to actually join</h2>
+      <ol class="steps mt1">
+        <li><h4>Come to a meeting</h4><p>No sign-up needed for your first one. Check the <a href="calendar.html">calendar</a> for the next all-hands.</p></li>
+        <li><h4>Do the safety training</h4><p>A short session before you can use the shop. Runs regularly in August and September.</p></li>
+        <li><h4>Pick a subteam</h4><p>Try a few. Nobody is locked in after week one.</p></li>
+        <li><h4>Turn in paperwork</h4><p>Registration, safety agreement, media release &mdash; all on the <a href="documents.html">documents page</a>.</p></li>
+      </ol>
+      <div class="grid gx2 mt2" style="gap:.6rem">
+        <div class="note"><h4>Parents</h4><p>Start with the <a href="parents.html">parent information page</a> &mdash; what FTC is, the real time commitment, costs and safety.</p></div>
+        <div class="note"><h4>Mentors &amp; sponsors</h4><p>See <a href="support.html">sponsors &amp; mentors</a>. We need skills more often than money, though we need that too.</p></div>
+      </div>
+    </div>
+    <div class="form cut-all">
+      <h3>Get on the list</h3>
+      <p class="small muted">Interest meetings, schedule changes, competition-day logistics. Low volume.</p>
+      <form data-placeholder-form class="mt2">
+        <div class="frow">
+          <div class="field"><label for="fname">First name</label><input id="fname" name="fname" type="text" autocomplete="given-name" required></div>
+          <div class="field"><label for="lname">Last name</label><input id="lname" name="lname" type="text" autocomplete="family-name" required></div>
+        </div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required>
+          <p class="hint">Students: use your school address if you have one.</p></div>
+        <fieldset><legend>I am a&hellip;</legend>
+          <label class="crow"><input type="radio" name="role" value="student" checked> Brophy student interested in joining</label>
+          <label class="crow"><input type="radio" name="role" value="parent"> Parent or guardian</label>
+          <label class="crow"><input type="radio" name="role" value="mentor"> Prospective mentor or volunteer</label>
+          <label class="crow"><input type="radio" name="role" value="sponsor"> Prospective sponsor</label>
+          <label class="crow"><input type="radio" name="role" value="alum"> Broncobots alum</label>
+        </fieldset>
+        <div class="field"><label for="grade">Grade (students only)</label>
+          <select id="grade" name="grade"><option value="">&mdash; Select &mdash;</option>
+            <option>9th</option><option>10th</option><option>11th</option><option>12th</option>
+            <option>Loyola Academy scholar</option><option>Not a student</option></select></div>
+        <div class="field"><label for="msg">Anything you want to tell us?</label>
+          <textarea id="msg" name="msg" placeholder="Questions, a skill you could mentor, a company that might sponsor."></textarea></div>
+        <button class="btn" type="submit">Send it <span class="arrow">&rsaquo;</span></button>
+        <p class="hint mt1">Placeholder form &mdash; not connected yet. Wire it to Netlify Forms, a Google
+          Form, or the team inbox before publishing.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="cta bg-maroon">
+  <img class="gear" src="assets/img/logo-mark.png" alt="">
+  <div class="shell cta-in">
+    <div>
+      <p class="eyebrow">One more time, for the record</p>
       <h2>No experience required</h2>
       <p>We accept all students regardless of previous experience. Show up, and we will teach you the rest.</p>
     </div>
-    <div class="btn-row"><a class="btn light" href="calendar.html">Find the next meeting <span class="arrow">&rsaquo;</span></a></div>
+    <div class="row"><a class="btn light" href="calendar.html">Find the next meeting <span class="arrow">&rsaquo;</span></a></div>
   </div>
 </section>

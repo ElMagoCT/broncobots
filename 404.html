@@ -20,20 +20,20 @@
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 <div class="topbar">
-  <div class="shell">
+  <div class="shell-wide">
     <span class="creed">Trust &middot; Respect &middot; Commitment</span>
     <span class="links">
-      <a href="parents.html">Parent Info</a>
-      <a href="bulletin.html">Weekly Bulletin</a>
-      <a href="join.html">Contact</a>
+      <a href="parents.html">Parents</a>
+      <a href="bulletin.html">Bulletin</a>
+      <a href="calendar.html">Calendar</a>
     </span>
   </div>
 </div>
 <header class="site-header">
-  <div class="shell">
+  <div class="shell-wide">
     <a class="brand" href="index.html">
-      <img src="assets/img/logo-mark.png" alt="" width="46" height="46">
-      <span class="brand-text">
+      <img src="assets/img/logo-mark.png" alt="" width="38" height="38">
+      <span>
         <span class="brand-name">Broncobots</span>
         <span class="brand-sub">Brophy College Preparatory</span>
       </span>
@@ -42,35 +42,40 @@
 <ul>
 <li><a href="index.html">Home</a></li>
 <li>
-<button class="navbtn" type="button" aria-expanded="false">Programs<i class="caret"></i></button>
+<button class="navbtn" type="button" aria-expanded="false">Teams<i class="caret"></i></button>
 <ul class="dropdown">
-<li><a href="programs.html">Programs<small>Overview</small></a></li>
-<li><a href="frc.html">FRC 991<small>Our flagship competition team</small></a></li>
-<li><a href="ftc.html">FTC Teams<small>Five student-led squads</small></a></li>
-<li><a href="fll.html">FLL<small>Mentoring Loyola Academy scholars</small></a></li>
+<li><a href="teams.html">All six teams<small>Overview</small></a></li>
+<li><a href="frc.html">FRC 991<small>Flagship team, spring season</small></a></li>
+<li><a href="ftc.html">FTC Teams<small>Five squads, fall season</small></a></li>
+<li><a href="fll.html">FLL Mentoring<small>We coach Loyola Academy</small></a></li>
 </ul></li>
 <li>
 <button class="navbtn" type="button" aria-expanded="false">About<i class="caret"></i></button>
 <ul class="dropdown">
-<li><a href="about.html">About<small>Overview</small></a></li>
-<li><a href="history.html">Our History<small>How the program grew</small></a></li>
-<li><a href="leadership.html">Leadership<small>Students and mentors</small></a></li>
-<li><a href="competitions.html">Competitions<small>Where we compete</small></a></li>
+<li><a href="about.html">Our story<small>Overview</small></a></li>
+<li><a href="leadership.html">Leadership<small>Students run this program</small></a></li>
+<li><a href="results.html">Results & Awards<small>How we have done</small></a></li>
 </ul></li>
-<li><a href="parents.html">Parents</a></li>
+<li>
+<button class="navbtn" type="button" aria-expanded="false">Join<i class="caret"></i></button>
+<ul class="dropdown">
+<li><a href="join.html">Students — start here<small>Overview</small></a></li>
+<li><a href="parents.html">For Parents<small>What FTC is, plainly</small></a></li>
+<li><a href="support.html">Sponsors & Mentors<small>Give time, skills or funds</small></a></li>
+</ul></li>
 <li><a href="calendar.html">Calendar</a></li>
 <li>
 <button class="navbtn" type="button" aria-expanded="false">Resources<i class="caret"></i></button>
 <ul class="dropdown">
-<li><a href="documents.html">Resources<small>Overview</small></a></li>
-<li><a href="documents.html">Documents<small>Forms, handbook, safety</small></a></li>
 <li><a href="bulletin.html">Weekly Bulletin<small>What is happening this week</small></a></li>
-<li><a href="links.html">Links<small>FIRST, tools and partners</small></a></li>
+<li><a href="documents.html">Documents & Forms<small>Paperwork and handbook</small></a></li>
+<li><a href="links.html">Links & Tools<small>FIRST, software, vendors</small></a></li>
 </ul></li>
 </ul>
 <div class="nav-cta"><a class="btn sm" href="join.html">Join Us <span class="arrow">&rsaquo;</span></a></div>
 </nav>
-    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span></button>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false"
+            aria-controls="site-nav"><span></span></button>
   </div>
 </header>
 <div class="scrim" aria-hidden="true"></div>
@@ -78,73 +83,102 @@
 <section class="banner">
   <div class="banner-media"><img src="assets/img/practice-field.jpg" alt=""></div>
   <div class="shell">
-    
     <p class="eyebrow">Error 404</p>
     <h1>That part fell off</h1>
     <p class="lede">The page you were looking for is not here. It happens — usually about twenty minutes before a match.</p>
   </div>
 </section>
 <section>
-  <div class="shell-narrow center reveal">
-    <h2>Try one of these instead</h2>
-    <div class="btn-row center mt2">
-      <a class="btn" href="index.html">Home</a>
-      <a class="btn ghost" href="programs.html">Programs</a>
-      <a class="btn ghost" href="parents.html">Parent info</a>
-      <a class="btn ghost" href="calendar.html">Calendar</a>
-      <a class="btn ghost" href="join.html">Join us</a>
+  <div class="shell split top">
+    <div>
+      <h2>Try one of these instead</h2>
+      <div class="row mt2">
+        <a class="btn" href="index.html">Home</a>
+        <a class="btn ghost" href="teams.html">Teams</a>
+        <a class="btn ghost" href="parents.html">Parents</a>
+        <a class="btn ghost" href="calendar.html">Calendar</a>
+        <a class="btn ghost" href="join.html">Join us</a>
+      </div>
+      <p class="small muted mt2">If you followed a link from an older version of this site, the pages were
+        reorganised &mdash; Programs is now <a href="teams.html">Teams</a>, Competitions is now
+        <a href="results.html">Results &amp; Awards</a>, and History moved into
+        <a href="about.html">Our Story</a>.</p>
+    </div>
+    <div>
+      <div class="figbox cut-all"><div class="fig" data-rig="wheeloff"><svg class="rig-svg" viewBox="0 0 520 260" role="img" aria-label="A robot that has lost a wheel.">
+  <line class="floor" x1="20" y1="222" x2="500" y2="222"/>
+  <g data-part="bot">
+    <rect class="fr" x="96" y="150" width="150" height="60" rx="5"/>
+    <circle class="hole" cx="116" cy="180" r="4.4"/><circle class="hole" cx="134" cy="180" r="4.4"/><circle class="hole" cx="152" cy="180" r="4.4"/><circle class="hole" cx="170" cy="180" r="4.4"/><circle class="hole" cx="188" cy="180" r="4.4"/><circle class="hole" cx="206" cy="180" r="4.4"/><circle class="hole" cx="224" cy="180" r="4.4"/>
+    <rect class="fr2" x="126" y="118" width="52" height="34" rx="4"/>
+    <circle class="fr3" cx="132" cy="212" r="18"/>
+    <circle class="acf" cx="132" cy="212" r="5"/>
+    <text class="lbl" x="212" y="186" text-anchor="middle">404</text>
+  </g>
+  <g data-part="spark" opacity="0">
+    <path class="wire-ac" d="M228 214 L240 202 M228 214 L244 218 M228 214 L236 228"/>
+  </g>
+  <g transform="translate(224,212)"><g data-part="wheel"><circle class="fr3" cx="0" cy="0" r="18"/><circle class="hole" cx="0" cy="0" r="9"/><circle class="acf" cx="0" cy="0" r="4"/></g></g>
+</svg></div></div>
     </div>
   </div>
 </section>
 </main>
 <footer class="site-footer">
   <div class="shell">
-    <div class="footer-grid">
+    <div class="fgrid">
       <div>
-        <div class="footer-brand">
+        <div class="fbrand">
           <img src="assets/img/logo-mark.png" alt="">
           <span>
             <b>Broncobots</b>
             <span>Brophy College Preparatory</span>
           </span>
         </div>
-        <p class="small">Student-led robotics at Brophy College Preparatory in Phoenix, Arizona.
-          One <em>FIRST</em> Robotics Competition team, five <em>FIRST</em> Tech Challenge teams,
-          and a mentoring program for Loyola Academy scholars.</p>
-        <p class="footer-creed">Trust. Respect. Commitment.</p>
+        <p class="small">Student-led robotics in Phoenix, Arizona. One <em>FIRST</em> Robotics
+          Competition team, five <em>FIRST</em> Tech Challenge teams, and a mentoring program for
+          Loyola Academy scholars.</p>
+        <p class="fcreed">Trust. Respect. Commitment.</p>
       </div>
       <div>
-        <h4>Programs</h4>
+        <h4>Teams</h4>
         <ul>
+          <li><a href="teams.html">All six teams</a></li>
           <li><a href="frc.html">FRC 991</a></li>
-          <li><a href="ftc.html">FTC Teams</a></li>
-          <li><a href="fll.html">FLL Mentoring</a></li>
-          <li><a href="competitions.html">Competitions</a></li>
+          <li><a href="ftc.html">FTC teams</a></li>
+          <li><a href="fll.html">FLL mentoring</a></li>
         </ul>
       </div>
       <div>
-        <h4>For Families</h4>
+        <h4>About</h4>
         <ul>
-          <li><a href="parents.html">Parent Information</a></li>
-          <li><a href="calendar.html">Team Calendar</a></li>
-          <li><a href="documents.html">Documents &amp; Forms</a></li>
-          <li><a href="bulletin.html">Weekly Bulletin</a></li>
-          <li><a href="join.html">Join / Contact</a></li>
+          <li><a href="about.html">Our story</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="results.html">Results &amp; awards</a></li>
         </ul>
       </div>
       <div>
-        <h4>Find Us</h4>
+        <h4>Get involved</h4>
         <ul>
-          <li>4701 N Central Ave<br>Phoenix, AZ 85012</li>
-          <li><a href="mailto:broncobots@brophyprep.org">broncobots@brophyprep.org</a></li>
-          <li><a href="https://www.brophyprep.org" target="_blank" rel="noopener">brophyprep.org</a></li>
-          <li><a href="https://www.firstinspires.org" target="_blank" rel="noopener">firstinspires.org</a></li>
+          <li><a href="join.html">Students</a></li>
+          <li><a href="parents.html">Parents</a></li>
+          <li><a href="support.html">Sponsors &amp; mentors</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Season</h4>
+        <ul>
+          <li><a href="calendar.html">Calendar</a></li>
+          <li><a href="bulletin.html">Weekly bulletin</a></li>
+          <li><a href="documents.html">Documents</a></li>
+          <li><a href="links.html">Links &amp; tools</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>&copy; 2026 Brophy Broncobots. <em>FIRST</em>, FRC, FTC and <em>FIRST</em> LEGO League are trademarks of <em>FIRST</em>.</span>
-      <span class="placeholder-note">Draft rebuild &mdash; contact details and rosters are placeholders.</span>
+    <div class="fbot">
+      <span>&copy; 2026 Brophy Broncobots &middot; 4701 N Central Ave, Phoenix AZ 85012 &middot;
+        <em>FIRST</em>, FRC, FTC and <em>FIRST</em> LEGO League are trademarks of <em>FIRST</em>.</span>
+      <span class="ph">Draft rebuild &mdash; rosters and contact details are placeholders.</span>
     </div>
   </div>
 </footer>
